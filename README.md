@@ -4,6 +4,7 @@ A tool to create graphs from real vectors using K-nearest neighbors.
 ## Requirements
 - Python 3
 - Numpy
+- SciPy
 - Scikit-learn
 
 ## Usage
@@ -11,7 +12,7 @@ A tool to create graphs from real vectors using K-nearest neighbors.
 
 where:
 
-```input_file.npy``` is a numpy array representing the n vectors
+```input_file.npy``` is a numpy ndarray representing the n vectors
 
 ```output_file``` is the desired output file
 
@@ -21,7 +22,9 @@ where:
 
 ### Flags
 ```-s``` Output to binary stream format
+
 ```-r``` Randomize the stream (TODO)
+
 ```-d``` Add deletions to stream  (TODO)
 
 ### Example 
