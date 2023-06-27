@@ -28,4 +28,4 @@ where:
 ```-d``` Add deletions to stream  (TODO)
 
 ### Example 
-```python3 knn-graph.py sbm.npy sbm.graphstream 5 -s```
+```python3 knn-graph.py sbm.npy sbm.stream 5 -s```
