@@ -1,5 +1,6 @@
 from sys import argv
 import numpy as np
+import scipy.sparse as sp
 import struct
 import random
 
@@ -28,26 +29,26 @@ neighbors.fit(vecs)
 print('Fit Nearest Neighbors')
 
 # Get K+1 nearest points for each vector in vecs.
-nn_matrix = neighbors.kneighbors_graph(vecs, n_neighbors=k+1, mode='connectivity').toarray().astype(int)
+nn_matrix = neighbors.kneighbors_graph(vecs, n_neighbors=k+1, mode='connectivity').astype(int).astype(bool)
 
 # Make the matrix symmetric.
-nn_graph = nn_matrix | nn_matrix.transpose()
+nn_graph = (nn_matrix + nn_matrix.transpose())
 
 # Remove upper triangle & diagonal entries so all edges are represented once
-graph = np.tril(nn_graph, -1)
+graph = sp.tril(nn_graph, -1)
 print('Generated KNN Graph')
 
 if args.output_stream:
   num_nodes = vecs.shape[0]
-  num_updates = np.count_nonzero(graph)
-
+  num_updates = graph.count_nonzero()
+  
   # Using struct for binary formatting
   # See https://docs.python.org/3/library/struct.html for details
   output = open(output_path, "wb")
   output.write(struct.pack("=L", num_nodes))
   output.write(struct.pack("=Q", num_updates))
 
-  for (x,y) in zip(*np.nonzero(graph)):
+  for (x,y) in zip(*graph.nonzero()):
     output.write(struct.pack("=BLL", 1, x, y))
   output.close()
 
